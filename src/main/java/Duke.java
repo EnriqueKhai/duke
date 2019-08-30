@@ -17,7 +17,7 @@ public class Duke {
 		String userEntry = input.nextLine();
 
 		while (!userEntry.equals(userCommands[0])) {
-			String[] parse = userEntry.split(" ");
+			String[] parse = userEntry.split(" ", 2);
 
 			if (parse[0].equals("done")) {
 				int index = Integer.parseInt(parse[1]);
@@ -33,10 +33,8 @@ public class Duke {
 
 					userEntry = input.nextLine();
 				} else {
-					Task j = new Task(userEntry);
+					Task j = createTask(parse[0], parse[1], userList.size());
 					userList.add(j);
-
-					printAdded(userEntry);
 
 					userEntry = input.nextLine();
 				}
@@ -65,9 +63,11 @@ public class Duke {
 		printHorizontalLines();
 	}
 
-	public static void printAdded(String userEntry) {
+	public static void printAdded(String getStatus, int size) {
 		printHorizontalLines();
-		System.out.println("       added: " + userEntry);
+		System.out.println("       Got it. I've added this task:");
+		System.out.println("         " + getStatus);
+		System.out.println("       Now you have " + size + " tasks in the list.");
 		printHorizontalLines();
 	}
 
@@ -83,6 +83,30 @@ public class Duke {
 
 		printHorizontalLines();
 	}
+
+	public static Task createTask(String type, String userEntry, int size) {
+
+		size++;
+
+		if (type.equals("deadline")) {
+			String[] parse = userEntry.split(" /");
+			String[] parse2 = parse[1].split(" ", 2);
+			Deadline j = new Deadline(parse[0], parse2[1]);
+			printAdded(j.getStatus(), size);
+			return j;
+		} else if (type.equals("event")) {
+			String[] parse = userEntry.split(" /");
+			String[] parse2 = parse[1].split(" ", 2);
+			Event j = new Event(parse[0], parse2[1]);
+			printAdded(j.getStatus(), size);
+			return j;
+		} else {
+			ToDo j = new ToDo(userEntry);
+			printAdded(j.getStatus(), size);
+			return j;
+		}
+	}
+
 
 	public static void printOutro() {
 		printHorizontalLines();
