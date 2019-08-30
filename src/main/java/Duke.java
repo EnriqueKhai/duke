@@ -1,4 +1,4 @@
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Javadoc summary... ?
@@ -8,6 +8,45 @@ public class Duke {
 	 * Javadoc comment... ? 
 	 */
 	public static void main(String[] args) {
+		printIntro();
+
+		String[] userCommands = {"bye", "list"};
+		List<Task> userList = new ArrayList<Task>();
+
+		Scanner input = new Scanner(System.in);
+		String userEntry = input.nextLine();
+
+		while (!userEntry.equals(userCommands[0])) {
+			String[] parse = userEntry.split(" ");
+
+			if (parse[0].equals("done")) {
+				int index = Integer.parseInt(parse[1]);
+				index--;
+
+				userList.get(index).markAsDone();
+				printDone(userList.get(index), index);
+
+				userEntry = input.nextLine();
+			} else {
+				if (userEntry.equals(userCommands[1])) {
+					printList(userList);
+
+					userEntry = input.nextLine();
+				} else {
+					Task j = new Task(userEntry);
+					userList.add(j);
+
+					printAdded(userEntry);
+
+					userEntry = input.nextLine();
+				}
+			}
+		}
+
+		printOutro();
+	}
+
+	public static void printIntro() {
 		String logo = " ____        _        \n"
 			+ "|  _ \\ _   _| | _____ \n"
 			+ "| | | | | | | |/ / _ \\\n"
@@ -16,37 +55,42 @@ public class Duke {
 		System.out.println("Hello from\n" + logo);
 		System.out.println("Hello, I'm Duke.");
 		System.out.println("What can I do for you?");
+	}
 
-		int currIndex = 0;
-		String[] userInputs = new String[100];
-		String bye = "bye";
-		String bye1 = "list";
-		Scanner sc = new Scanner(System.in);
-		String userInput = sc.nextLine();
+	public static void printDone(Task j, int index) {
+		index++;
+		printHorizontalLines();
+		System.out.println("       Nice! I've marked this task as done:");
+		System.out.println("       " + index + ". " + j.getStatus());
+		printHorizontalLines();
+	}
 
-		while (!bye.equals(userInput)) {
-			if (bye1.equals(userInput)) {
-				System.out.println("       __________________________________________");
-				for (int i = 0; i < currIndex; i++) {
-					int j = i + 1;
-					System.out.println("       " + j + ". " + userInputs[i]);
-				}				
-				System.out.println("       __________________________________________");
-				userInput = sc.nextLine();
-				continue;
-			}
+	public static void printAdded(String userEntry) {
+		printHorizontalLines();
+		System.out.println("       added: " + userEntry);
+		printHorizontalLines();
+	}
 
-			System.out.println("       __________________________________________");
-			System.out.println("       added: " + userInput);
-			System.out.println("       __________________________________________");
-			userInputs[currIndex] = userInput;
-			currIndex++;
-			userInput = sc.nextLine();
+	public static void printList(List<Task> userList) {
+		printHorizontalLines();
+		System.out.println("       Here are the tasks in your list:");
+
+		int index = 1;
+		for (Task j: userList) {
+			System.out.println("       " + index + ". " + j.getStatus());
+			index++;
 		}
 
+		printHorizontalLines();
+	}
 
-		System.out.println("       __________________________________________");
+	public static void printOutro() {
+		printHorizontalLines();
 		System.out.println("       Bye. Hope to see you again soon!");
-		System.out.println("       __________________________________________");
+		printHorizontalLines();
+	}
+
+	public static void printHorizontalLines() {
+		System.out.println("       ___________________________________________________________");
 	}
 }
