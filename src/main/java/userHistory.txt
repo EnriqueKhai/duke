@@ -1,12 +1,3 @@
-todo watch movie
-deadline tut /by 2pm
-event sleep /at 1030pm
-done 1
-done 2
-done 3
-deadline 2113t /by tonight 2359
-event study sess with marc /at next sat 1030am
-event rest /at 5pm?
-done 4
-done 5
-done 6
+todo work
+deadline CL2800 Assignment /by 03/09/2019 2359
+deadline helloworld in python? lol /by idk when also lah honestly can otot

@@ -7,6 +7,7 @@ public class Duke {
 		printIntro();
 
 		File userHistory = new File("userHistory.txt");
+		//File userHistory = new File("C:/Users/Enrique Khai/Desktop/duke/src/main/java/userHistory.txt");
 
 		String[] userCommands = {"bye", "list"};
 		List<Task> userList = new ArrayList<Task>();
@@ -89,7 +90,7 @@ public class Duke {
 				} else {
 					Task j = createTask(parse[0], parse[1]);
 					userList.add(j);
-					
+
 					int size = userList.size();
 					size++;
 					printAdded(j.getStatus(), size);
@@ -149,12 +150,18 @@ public class Duke {
 		if (type.equals("deadline")) {
 			String[] parse = userEntry.split(" /");
 			String[] parse2 = parse[1].split(" ", 2);
-			Deadline j = new Deadline(parse[0], parse2[1]);
+			
+			String output = regexCheck(parse2[1]);
+
+			Deadline j = new Deadline(parse[0], output);
 			return j;
 		} else if (type.equals("event")) {
 			String[] parse = userEntry.split(" /");
 			String[] parse2 = parse[1].split(" ", 2);
-			Event j = new Event(parse[0], parse2[1]);
+			
+			String output = regexCheck(parse2[1]);
+
+			Event j = new Event(parse[0], output);
 			return j;
 		} else {
 			ToDo j = new ToDo(userEntry);
@@ -162,6 +169,69 @@ public class Duke {
 		}
 	}
 
+	public static String regexCheck(String preOutput) {
+		String[] parse = preOutput.split(" ");
+
+		boolean dateFound = false;
+		boolean timeFound = false;
+		String date = "";
+		String time = "";
+
+		for (String s:parse) {
+			if (s.matches("\\d{2}/\\d{2}/\\d{4}")) {
+				dateFound = true;
+				
+				String[] parseDate = s.split("/");
+
+				int day = Integer.parseInt(parseDate[0]);
+				int month = Integer.parseInt(parseDate[1]);
+				int year = Integer.parseInt(parseDate[2]);
+
+				date += Integer.toString(day);
+
+				String[] prefix = {"th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th",
+							"th", "th", "th", "th", "th", "th", "th", "th", "th", "th"};
+				String[] monthNames = { "indexCorrection", "January", "February", "March", "April", "May", "June",
+							"July", "August", "September", "October", "November", "December"};
+
+				date = date + prefix[day%20] + " of " + monthNames[month] + " " + parseDate[2];
+			} else if (s.matches("\\d{4}")) {
+				timeFound = true;
+
+				int militaryTime = Integer.parseInt(s);
+				int hour = militaryTime / 100;
+				int min = militaryTime % 100;
+
+				if (hour >= 13) {
+					hour -= 12;
+					time += Integer.toString(hour);
+				} else {
+					time += Integer.toString(hour);
+				}
+
+				if (min >= 10) {
+					time = time + "." + Integer.toString(min);
+				} else {
+					time = time + ".0" + Integer.toString(min);
+				}
+
+				hour += 12;
+				if (hour >= 12) {
+					time += "pm";
+				} else {
+					time += "am";
+				}
+			}
+		}
+
+		String modifiedOutput = date + (dateFound && timeFound ? ", " : "") + time;
+
+		if (dateFound || timeFound) {
+			return modifiedOutput;
+		} else {
+			return preOutput;
+		}
+	}
 
 	public static void printOutro() {
 		printHorizontalLines();
