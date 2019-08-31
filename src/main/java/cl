@@ -1,0 +1,2 @@
+rm userHistory.txt
+touch userHistory.txt

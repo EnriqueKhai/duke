@@ -1,29 +1,55 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ * Javadoc summary... ?
+ */
 public class Duke {
-
+	/**
+	 * Javadoc comment... ? 
+	 */
 	public static void main(String[] args) {
 		printIntro();
 
+		//Loads saved state/ user's history.
 		File userHistory = new File("userHistory.txt");
 
 		String[] userCommands = {"bye", "list"};
 		List<Task> userList = new ArrayList<Task>();
 
-		//loads userHistory.txt
-		try {
-			Scanner input = new Scanner(userHistory);
-			String userEntry = input.nextLine();
-			loadData(userHistory, userCommands, userList, input, userEntry);
-		} catch (IOException ex) {
-			System.out.println("ERROR: " + ex);
-		}
-
-		//resumes from loaded user data
 		Scanner input = new Scanner(System.in);
 		String userEntry = input.nextLine();
+
 		processData(userHistory, userCommands, userList, input, userEntry);
+		/*while (!userEntry.equals(userCommands[0])) {
+			String[] parse = userEntry.split(" ", 2);
+
+			if (parse[0].equals("done")) {
+				int index = Integer.parseInt(parse[1]);
+				index--;
+
+				userList.get(index).markAsDone();
+
+				//Writes to userHistory when a task is marked as done.
+				writeHistory(userEntry, userHistory);
+				printDone(userList.get(index), index);
+
+				userEntry = input.nextLine();
+			} else {
+				if (userEntry.equals(userCommands[1])) {
+					printList(userList);
+
+					userEntry = input.nextLine();
+				} else {
+					Task j = createTask(parse[0], parse[1], userList.size());
+					userList.add(j);
+
+					//Writes to userHistory when a task is added.
+					writeHistory(userEntry, userHistory);
+					userEntry = input.nextLine();
+				}
+			}
+		}*/
 
 		printOutro();
 	}
@@ -37,33 +63,6 @@ public class Duke {
 		System.out.println("Hello from\n" + logo);
 		System.out.println("Hello, I'm Duke.");
 		System.out.println("What can I do for you?");
-	}
-
-	public static void loadData(File userHistory, String[] userCommands, List<Task> userList, Scanner input, String userEntry) {	
-		while (true) {
-			String[] parse = userEntry.split(" ", 2);
-
-			if (parse[0].equals("done")) {
-				int index = Integer.parseInt(parse[1]);
-				index--;
-				userList.get(index).markAsDone();
-
-				if (input.hasNextLine()) {
-					userEntry = input.nextLine();
-				} else {
-					break;
-				}
-			} else {
-				Task j = createTask(parse[0], parse[1]);
-				userList.add(j);
-
-				if (input.hasNextLine()) {
-					userEntry = input.nextLine();
-				} else {
-					break;
-				}
-			}
-		}
 	}
 
 	public static void processData(File userHistory, String[] userCommands, List<Task> userList, Scanner input, String userEntry) {	
@@ -87,12 +86,8 @@ public class Duke {
 
 					userEntry = input.nextLine();
 				} else {
-					Task j = createTask(parse[0], parse[1]);
+					Task j = createTask(parse[0], parse[1], userList.size());
 					userList.add(j);
-					
-					int size = userList.size();
-					size++;
-					printAdded(j.getStatus(), size);
 
 					//Writes to userHistory when a task is added.
 					writeHistory(userEntry, userHistory);
@@ -145,19 +140,25 @@ public class Duke {
 		printHorizontalLines();
 	}
 
-	public static Task createTask(String type, String userEntry) {
+	public static Task createTask(String type, String userEntry, int size) {
+
+		size++;
+
 		if (type.equals("deadline")) {
 			String[] parse = userEntry.split(" /");
 			String[] parse2 = parse[1].split(" ", 2);
 			Deadline j = new Deadline(parse[0], parse2[1]);
+			printAdded(j.getStatus(), size);
 			return j;
 		} else if (type.equals("event")) {
 			String[] parse = userEntry.split(" /");
 			String[] parse2 = parse[1].split(" ", 2);
 			Event j = new Event(parse[0], parse2[1]);
+			printAdded(j.getStatus(), size);
 			return j;
 		} else {
 			ToDo j = new ToDo(userEntry);
+			printAdded(j.getStatus(), size);
 			return j;
 		}
 	}
