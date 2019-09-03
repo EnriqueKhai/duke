@@ -54,6 +54,17 @@ public class Duke {
 				} else {
 					break;
 				}
+			} else if (parse[0].equals("delete")) {
+				int index = Integer.parseInt(parse[1]);
+				index--;
+
+				removeTask(userList, index);
+
+				if (input.hasNextLine()) {
+					userEntry = input.nextLine();
+				} else {
+					break;
+				}
 			} else {
 				Task j = createTask(parse[0], parse[1]);
 				userList.add(j);
@@ -80,6 +91,20 @@ public class Duke {
 				//Writes to userHistory when a task is marked as done.
 				writeHistory(userEntry, userHistory);
 				printDone(userList.get(index), index);
+
+				userEntry = input.nextLine();
+			} else if (parse[0].equals("delete")) {
+				int index = Integer.parseInt(parse[1]);
+				index--;
+
+				int size = userList.size();
+				size--;
+
+				printRemoved(userList.get(index), size);
+				removeTask(userList, index);
+
+				//Writes to userHistory when a task is marked as done.
+				writeHistory(userEntry, userHistory);
 
 				userEntry = input.nextLine();
 			} else {
@@ -133,6 +158,14 @@ public class Duke {
 		printHorizontalLines();
 	}
 
+	public static void printRemoved (Task j, int size) {
+		printHorizontalLines();
+		System.out.println("       Noted. I've removed this task: ");
+		System.out.println("        " + j.getStatus());
+		System.out.println("       Now you have " + size + " tasks in the list");
+		printHorizontalLines();
+	}
+
 	public static void printList(List<Task> userList) {
 		printHorizontalLines();
 		System.out.println("       Here are the tasks in your list:");
@@ -167,6 +200,10 @@ public class Duke {
 			ToDo j = new ToDo(userEntry);
 			return j;
 		}
+	}
+
+	public static void removeTask (List<Task> userList, int index) {
+		userList.remove(index);
 	}
 
 	public static String regexCheck(String preOutput) {
