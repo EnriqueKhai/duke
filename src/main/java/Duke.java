@@ -15,8 +15,10 @@ public class Duke {
 		//loads userHistory.txt
 		try {
 			Scanner input = new Scanner(userHistory);
-			String userEntry = input.nextLine();
-			loadData(userHistory, userCommands, userList, input, userEntry);
+			if (input.hasNextLine()) {
+				String userEntry = input.nextLine();
+				loadData(userHistory, userCommands, userList, input, userEntry);
+			}
 		} catch (IOException ex) {
 			System.out.println("ERROR: " + ex);
 		}
@@ -93,6 +95,10 @@ public class Duke {
 				printDone(userList.get(index), index);
 
 				userEntry = input.nextLine();
+			} else if (parse[0].equals("find")) {
+				findTask(userList, userEntry);
+
+				userEntry = input.nextLine();
 			} else if (parse[0].equals("delete")) {
 				int index = Integer.parseInt(parse[1]);
 				index--;
@@ -117,7 +123,6 @@ public class Duke {
 					userList.add(j);
 
 					int size = userList.size();
-					size++;
 					printAdded(j.getStatus(), size);
 
 					//Writes to userHistory when a task is added.
@@ -174,6 +179,44 @@ public class Duke {
 		for (Task j: userList) {
 			System.out.println("       " + index + ". " + j.getStatus());
 			index++;
+		}
+
+		printHorizontalLines();
+	}
+
+	public static void findTask (List<Task> userList, String userEntry) {
+		printHorizontalLines();
+		System.out.println("       Here are the matching tasks in your list:");
+
+		int index = 1;
+		String[] removeFind = userEntry.split(" ", 2);
+		String[] parse = removeFind[1].split(" ");
+
+		for (Task j: userList) {
+			String taskDescription = j.getStatus();
+			String[] parseDescription = taskDescription.split(" ");
+
+			boolean taskNotMatch = false;
+
+			for (String s: parse) {
+				boolean foundInParseDescription = false;
+
+				for (String ss: parseDescription) {
+					if (ss.equals(s)) {
+						foundInParseDescription = true;
+					}
+				}
+
+				if (!foundInParseDescription) {
+					taskNotMatch = true;
+					break;
+				}
+			}		
+
+			if (!taskNotMatch) {
+				System.out.println("       " + index + "." + j.getStatus());
+				index++;
+			}
 		}
 
 		printHorizontalLines();

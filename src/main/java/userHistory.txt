@@ -1,8 +1,6 @@
-todo homework
-todo dota
-delete 1
-todo say hi to mom
+todo game
+todo borrow books
+deadline cl2280 2nd assignment /by 06/09/2019 2359
+todo work
+done 2
 delete 2
-todo csgo
-todo stardew valley
-delete 1
