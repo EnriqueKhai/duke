@@ -36,7 +36,10 @@ public class Parser {
 				storage.writeHistory(userEntry, userHistory);
 
 				userEntry = input.nextLine();
-			} else {
+			} else if (parse[0].equals("todo") ||
+				   parse[0].equals("deadline") ||
+				   parse[0].equals("event") ||
+				   parse[0].equals("list")) {
 				if (userEntry.equals(userCommands[1])) {
 					ui.printList(userList);
 
@@ -52,6 +55,9 @@ public class Parser {
 					storage.writeHistory(userEntry, userHistory);
 					userEntry = input.nextLine();
 				}
+			} else {
+				System.out.println("Command: '" + userEntry + "' not recognised, please try again.");
+				userEntry = input.nextLine();
 			}
 		}
 	}
