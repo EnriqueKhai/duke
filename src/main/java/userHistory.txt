@@ -7,3 +7,11 @@ delete 2
 delete 1
 delete 2
 delete 1
+todo study with grace!
+done 1
+todo study literature with my new friends!
+deadline loads ot stuff /by 05/09/2019
+delete 1
+delete 1
+done 1
+done 1

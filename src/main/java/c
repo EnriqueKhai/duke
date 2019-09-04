@@ -1,5 +1,1 @@
-javac Duke.java
-javac Task.java
-javac ToDo.java
-javac Deadline.java
-javac Event.java
+javac *.java
