@@ -8,13 +8,23 @@ public class Duke {
 	public static void main(String[] args) {
 		ui.printIntro();
 
-		//File userHistory = new File("C:/Users/Enrique Khai/Desktop/duke/src/main/java/userHistory.txt");
 		File userHistory = new File("userHistory.txt");
+
+		try {
+			if (!userHistory.exists()) {
+				userHistory.createNewFile();
+			}
+		} catch (IOException ex) {
+			System.out.println("File was not created. [Error!]");
+			System.out.println(ex);
+		}
+
 		try {
 			inputHistory = new Scanner(userHistory);
 		} catch (IOException ex) {
 			System.out.println("ERROR: " + ex);
 		}
+
 		String[] userCommands = {"bye", "list"};
 		List<Task> userList = new ArrayList<Task>();
 
