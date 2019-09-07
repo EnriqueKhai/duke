@@ -3,6 +3,21 @@ import java.io.*;
 
 public class storage {
 
+	public static File findFile (String filename) {
+		File userHistory = new File(filename);
+
+		try {
+			if (!userHistory.exists()) {
+				userHistory.createNewFile();
+			}
+		} catch (IOException ex) {
+			System.out.println("File was not created. [Error!]");
+			System.out.println(ex);
+		}
+
+		return userHistory;
+	}
+
 	public static void loadData(File userHistory, String[] userCommands, List<Task> userList, Scanner input, String userEntry) {	
 		while (true) {
 			String[] parse = userEntry.split(" ", 2);
@@ -40,7 +55,7 @@ public class storage {
 			}
 		}
 	}
-	
+
 	public static void writeHistory(String userEntry, File userHistory) {
 		try {
 			FileWriter fr = new FileWriter(userHistory, true);
