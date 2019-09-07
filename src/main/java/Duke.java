@@ -1,10 +1,25 @@
 import java.util.*;
 import java.io.*;
 
+/**
+ *The Java Application 'Duke'.
+ */
 public class Duke {
+
+	/**
+	 *Declares a scanner object 'inputHistory' to to read any previously recorded tasks.
+	 */
 	protected static Scanner inputHistory;
+
+	/**
+	 *Declares and initialises a scanner object 'input' to read commands from the user.
+	 */
 	protected static Scanner input = new Scanner(System.in);
 
+
+	/**
+	 *The main() method, or the entry point into the Duke Java Application.
+	 */
 	public static void main(String[] args) {
 		ui.printIntro();
 
