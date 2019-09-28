@@ -13,6 +13,11 @@ public class Task {
 	 */
 	protected boolean isDone;
 
+        /**
+         *'taskID' represents the number associated with a particular task. It can be used to keep track of existing tasks.
+         */
+        protected int taskID;
+
 	/**
 	 *The constructor for the Task class.
 	 *@param description refers to the name of this Task.
